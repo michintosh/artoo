@@ -1,6 +1,8 @@
 const mongo = require('mongodb');
 const MongoClient = require('mongodb').MongoClient;
 const dbUrl = 'mongodb://localhost:27017/';
+const doorsCollection = createCollection('doors');
+const cardsCollection = createCollection('cards');
 
 const connection = (callback) => {
 	return MongoClient.connect(url, (err, db) =>{
@@ -11,8 +13,10 @@ const connection = (callback) => {
 }
 
 createDb(dbUrl + 'artoo');
-createCollection('doors');
-createCollection('cards');
+insertObject(cardsCollection, {cardId : "1234"});
+insertObject(doorsCollection, {doorId : "1234"});
+
+
 
 function insertObject(collection,obj){
 	connection((db)=>{
