@@ -66,16 +66,6 @@ router.post('/addCard', function (req, res){
 
 });
 
-function getCardById(id){
-	return {
-		id:'',
-		doors:[
-			'door_viacrispi',
-			'door_interna'
-		]
-	};
-}
-
 function insertObject(collection, obj, ciao){
     connection(function(db){
         db.collection(collection).insertOne(obj, function (err, res) {
@@ -96,7 +86,7 @@ function connection  (callback) {
 }
 
 function getObject(collection,id,callback){
-    var query = {_id: ObjectId(id)};
+    var query = {_id: id};
     connection(function (db){
         db.collection(collection).find(query).toArray(function(err, result) {
             console.log(result);
