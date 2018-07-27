@@ -36,8 +36,13 @@ router.post('/authDoor', function (req, res){
 	if(req.body.cardId && req.body.doorId){
 		connection(function(db){
 			db.collection(cardsCollectionName).updateOne({_id:req.body.cardId}, {$push:{doors:{id:req.body.doorId}}}, function(err, res){
-				if(err) throw err;
-				console.log("Door authorized");
+				if(err) {
+					throw err;
+					res.status(500).send({status: 'ERROR'});		
+				} else {
+					res.status(200).send({status: 'OK'});
+					console.log("Door authorized");
+				}
 			});
 		});
 	}
