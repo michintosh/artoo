@@ -16,13 +16,13 @@ insertObject(doorsCollectionName, {doorId : "1234"});
 
 
 
-function insertObject(collection,obj, callback){
+function insertObject(collection, obj, ciao){
 	connection(function(db){
 		db.collection(collection).insertOne(obj, function (err, res) {
 			if (err) throw err;
 			console.log('Document '+JSON.stringify(obj) + ' inserted');
 			console.log(JSON.stringify(res));
-			callback(err,res);
+			ciao(err,res);
 		});
 	});
 }
