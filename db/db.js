@@ -1,71 +1,47 @@
-var mongo = require('mongodb');
-	
-var MongoClient = require('mongodb').MongoClient;
-var url = 'mongodb://localhost:27017/';
+const mongo = require('mongodb');
+const MongoClient = require('mongodb').MongoClient;
+const dbUrl = 'mongodb://localhost:27017/';
 
+const connection = (callback) => {
+	return MongoClient.connect(url, (err, db) =>{
+			if (err) throw err;
+			let dbo = db.db("artoo");
+			callback(dbo);
+		});
+}
 
-function createDb(name){
-	MongoClient.connect(url, function(err, db) {
-  		if (err) throw err;
-  		console.log("Database created!");
-  		db.close();
+createDb(dbUrl + 'artoo');
+createCollection('doors');
+createCollection('cards');
+
+function insertObject(collection,obj){
+	connection((db)=>{
+		db.collection(collection).insertOne(obj, (err, res) => {
+			if (err) throw err;
+			console.log('Document '+JSON.stringify(obj) + ' inserted');
+			console.log(JSON.stringify(res));
+		});
 	});
 }
 
-createDb(url + 'artoo');
-createCollection('doors');
-createCollection('cards');
-//insertObject('users',{name:'hello'});
-
-function insertObject(collection,obj){
-	MongoClient.connect(url, function(err, db) {
-  		if (err) throw err;
-  		var dbo = db.db("artoo");
-	  	dbo.collection(collection).insertOne(obj, function(err, res) {
-		    if (err) throw err;
-		    console.log("1 document inserted");
-		    console.log(JSON.stringify(res));
-			dbo.collection("users").find({}).toArray(function(err, result) {
-				if (err) throw err;
-			    console.log(result);
-			    db.close();	
-  			});
-		    
-	  	});
-	}); 
-
-}
-
 function createCollection(name){
-	MongoClient.connect(url, function(err, db) {
-	  	if (err) throw err;
-	  	var dbo = db.db('artoo');
-	  	dbo.createCollection(name, function(err, res) {
-		    if (err) throw err;
-		    console.log("Collection created!");
-		    db.close();
-	  	});
-	}); 
+	connection((db)=>{
+		db.createCollection(name, (err, res) =>{
+			if (err) throw err;
+			console.log("Collection created!");
+		});
+	});
 }
 
-function deleteObject(id){
+function deleteObject(id){}
 
-
-}
-
-function updateObject(id){
-
-
-}
+function updateObject(id){}
 
 function getObject(collection,id){
-	var query = {_id: id};
-	dbo.collection(collection).find(query).toArray(function(err, result) {
-    db.close();
-
-  });
-
-
+	let query = {_id: id};
+	connection((db)=>{
+		db.collection(collection).find(query).toArray(function(err, result) {
+			console.log(result);
+	  });
+	});
 }
-
-
