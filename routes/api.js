@@ -86,7 +86,10 @@ function connection  (callback) {
 }
 
 function getObject(collection,id,callback){
-    var query = {_id: id};
+    var query = {_id: ObjectId(id)};
+
+	console.log(JSON.stringify(query));
+
     connection(function (db){
         db.collection(collection).find(query).toArray(function(err, result) {
             console.log(result);
