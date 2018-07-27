@@ -10,7 +10,7 @@ const DB{
 	function connection  (callback) {
 		return MongoClient.connect(dbUrl, function(err, db){
 				if (err) throw err;
-				let dbo = db.db("artoo");
+				var dbo = db.db("artoo");
 				callback(dbo);
 			});
 	}
@@ -45,7 +45,7 @@ const DB{
 	function updateObject(id,callback){}
 
 	function getObject(collection,id,callback){
-		let query = {_id: id};
+		var query = {_id: id};
 		connection(function (db){
 			db.collection(collection).find(query).toArray(function(err, result) {
 				console.log(result);
