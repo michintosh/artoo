@@ -31,15 +31,15 @@ router.post('/addDoor', function (req, res){
 	}
 });
 
-router.post('/addCard', function (req, res)){
+router.post('/addCard', function (req, res){
 	if(req.body.name){
 		insertObject(cardsCollectionName, req.body, function(err){
 			if(err)res.status(500).send({status: 'ERROR'});
 			res.status(200).send({status: 'OK'});
-		}
+		});
 	}
 
-}
+});
 
 function getCardById(id){
 	return {
