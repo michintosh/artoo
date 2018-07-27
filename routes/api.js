@@ -15,7 +15,7 @@ router.get('/checkCard',function (req, res) {
 				throw err;
 				res.status(500).send({status: 'ERROR'});		
 			} else {
-
+				console.log(result);
 				for(var i=0; i<result.doors.length;i++ ){
 					if(result.doors[i] === req.query.doorId){
 						res.status(200).send({status: 'OK'});
