@@ -4,6 +4,7 @@ const MongoClient = require('mongodb').MongoClient;
 const dbUrl = 'mongodb://localhost:27017/';
 const doorsCollectionName = 'doors';
 const cardsCollectionName = 'cards';
+const ObjectId = require('mongodb').ObjectID;
 const md5 = require('md5');
 
 router.get('/checkCard',function (req, res) {
@@ -35,7 +36,7 @@ router.post('/addDoor', function (req, res){
 router.post('/authDoor', function (req, res){
 	if(req.body.cardId && req.body.doorId){
 		connection(function(db){
-			db.collection(cardsCollectionName).update({_id:req.body.cardId}, {$push:{"doors":'hellodoor'}}, function(err, result){
+			db.collection(cardsCollectionName).updateOne({_id:ObjectId(req.body.cardId)}, {$push:{doors:{id:req.body.doorId}}}, function(err, result){
 				if(err) {
 					throw err;
 					res.status(500).send({status: 'ERROR'});		
