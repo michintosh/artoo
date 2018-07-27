@@ -13,8 +13,9 @@ function createDb(name){
 }
 
 createDb(url + 'artoo');
-createCollection('users');
-insertObject('users',{name:'hello'});
+createCollection('doors');
+createCollection('cards');
+//insertObject('users',{name:'hello'});
 
 function insertObject(collection,obj){
 	MongoClient.connect(url, function(err, db) {
