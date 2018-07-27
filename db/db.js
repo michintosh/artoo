@@ -24,7 +24,12 @@ function insertObject(collection,obj){
 		    if (err) throw err;
 		    console.log("1 document inserted");
 		    console.log(JSON.stringify(res));
-		    db.close();
+			dbo.collection("customers").find({}).toArray(function(err, result) {
+				if (err) throw err;
+			    console.log(result);
+			    db.close();	
+  			});
+		    
 	  	});
 	}); 
 
