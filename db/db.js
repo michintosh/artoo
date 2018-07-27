@@ -11,8 +11,8 @@ function connection  (callback) {
 			callback(dbo);
 		});
 }
-insertObject(cardsCollection, {cardId : "1234"});
-insertObject(doorsCollection, {doorId : "1234"});
+insertObject('cardsCollection', {cardId : "1234"});
+insertObject('doorsCollection', {doorId : "1234"});
 
 
 
