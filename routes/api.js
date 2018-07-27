@@ -10,7 +10,7 @@ const md5 = require('md5');
 router.get('/checkCard',function (req, res) {
 	console.log(JSON.stringify(req.query));
 	if (req.query.cardId && req.query.doorId){
-		getObject(cardsCollectionName, req.body.cardId, function(err, result){
+		getObject(cardsCollectionName, req.query.cardId, function(err, result){
 			if(err) {
 				throw err;
 				res.status(500).send({status: 'ERROR'});		
