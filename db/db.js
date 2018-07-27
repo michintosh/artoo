@@ -1,8 +1,8 @@
 const mongo = require('mongodb');
 const MongoClient = require('mongodb').MongoClient;
 const dbUrl = 'mongodb://localhost:27017/';
-const doorsCollectionName = createCollection('doors');
-const cardsCollectionName = createCollection('cards');
+const doorsCollectionName = 'doors';
+const cardsCollectionName = 'cards';
 
 function connection  (callback) {
 	return MongoClient.connect(dbUrl, function(err, db){
