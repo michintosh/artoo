@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/checkCard', (req, res) => {
+router.get('/checkCard',function (req, res) {
 	console.log(JSON.stringify(req.query));
 	if (req.query.cardId && req.query.doorId){
 		console.log("Success");
@@ -15,28 +15,19 @@ router.get('/checkCard', (req, res) => {
 			}
 			res.send('NO');
 		}
-
 	}
 });
 
-router.post('/addDoor', (req, res) => {
-	console.log("post");
-	console.log(JSON.stringify(req.body));
-		if(req.body.name){
-
-			if(createDoor(req.body.name)){
-				res.status(200).send({status: 'OK'});
-			}
-			else {
-				res.status(500).send({status: 'ERROR'});
-			}
-
-		}
-
+router.post('/addDoor', function (req, res){
+	if(req.body.name){
+		insertObject(doorsCollectionName, {name:req.body.name}, function(err){
+			if(err)res.status(500).send({status: 'ERROR'});
+			res.status(200).send({status: 'OK'});
+		});
+	}
 });
 
 function getCardById(id){
-
 	return {
 		id:'',
 		doors:[
@@ -44,15 +35,6 @@ function getCardById(id){
 			'door_interna'
 		]
 	};
-
-}
-
-
-function createDoor(name){
-
-	return false;
-
-
 }
 
 module.exports = router;
