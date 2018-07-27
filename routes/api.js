@@ -10,17 +10,22 @@ const md5 = require('md5');
 router.get('/checkCard',function (req, res) {
 	console.log(JSON.stringify(req.query));
 	if (req.query.cardId && req.query.doorId){
-		console.log("Success");
-		var card = getCardById(req.query.cardId);
-		if(card){
-			for(var i=0; i<card.doors.length;i++ ){
-				if(card.doors[i] === req.query.doorId){
-					res.send('OK');
-					return;
+		getObject(cardsCollectionName, req.body.cardId, function(err, result){
+			if(err) {
+				throw err;
+				res.status(500).send({status: 'ERROR'});		
+			} else {
+
+				for(var i=0; i<result.doors.length;i++ ){
+					if(result.doors[i] === req.query.doorId){
+						res.status(200).send({status: 'OK'});
+						return;
+					}
 				}
+				res.status(200).send({status: 'NO'});
+				console.log("Card checked");
 			}
-			res.send('NO');
-		}
+		});
 	}
 });
 
@@ -89,7 +94,7 @@ function connection  (callback) {
 }
 
 function getObject(collection,id,callback){
-    var query = {_id: id};
+    var query = {_id: ObjectId(id)};
     connection(function (db){
         db.collection(collection).find(query).toArray(function(err, result) {
             console.log(result);
