@@ -98,7 +98,7 @@ function getObject(collection,id,callback){
     connection(function (db){
         db.collection(collection).find(query).toArray(function(err, result) {
             console.log(result);
-            callback(err,res);
+            callback(err,result);
         });
     });
 }
