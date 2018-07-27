@@ -24,12 +24,22 @@ router.get('/checkCard',function (req, res) {
 
 router.post('/addDoor', function (req, res){
 	if(req.body.name){
-		db.insertObject(doorsCollectionName, {name:req.body.name}, function(err){
+		insertObject(doorsCollectionName, {name:req.body.name}, function(err){
 			if(err)res.status(500).send({status: 'ERROR'});
 			res.status(200).send({status: 'OK'});
 		});
 	}
 });
+
+router.post('/addCard', function (req, res)){
+	if(req.body.name){
+		insertObject(cardsCollectionName, req.body, function(err)){
+			if(err)res.status(500).send({status: 'ERROR'});
+			res.status(200).send({status: 'OK'});
+		}
+	}
+
+}
 
 function getCardById(id){
 	return {
@@ -43,7 +53,7 @@ function getCardById(id){
 
 function insertObject(collection, obj, ciao){
     connection(function(db){
-        db.collection(collection).insertOne(obj, function (err, res) {
+        collection(collection).insertOne(obj, function (err, res) {
             if (err) throw err;
             console.log('Document '+JSON.stringify(obj) + ' inserted');
             console.log(JSON.stringify(res));
@@ -63,7 +73,7 @@ function connection  (callback) {
 function getObject(collection,id,callback){
     var query = {_id: id};
     connection(function (db){
-        db.collection(collection).find(query).toArray(function(err, result) {
+        collection(collection).find(query).toArray(function(err, result) {
             console.log(result);
             callback(err,res);
         });
@@ -72,7 +82,7 @@ function getObject(collection,id,callback){
 
 function createCollection(name,callback){
     connection(function(db){
-        db.createCollection(name, function (err, res){
+        createCollection(name, function (err, res){
             if (err) throw err;
             console.log("Collection created!");
             callback(err,res);
