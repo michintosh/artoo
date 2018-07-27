@@ -13,6 +13,8 @@ function createDb(){
 }
 
 createDb(url);
+createCollection('users');
+insertObject('users',{name:'hello'});
 
 function insertObject(collection,obj){
 	MongoClient.connect(url, function(err, db) {
@@ -26,6 +28,14 @@ function insertObject(collection,obj){
   });
 }); 
 
+}
+
+function createCollection(name){
+	dbo.createCollection(name, function(err, res) {
+    if (err) throw err;
+    console.log("Collection created!");
+    db.close();
+  });
 }
 
 function deleteObject(id){
