@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const db = require('db/db');
+const db = require('./db/db');
+const MongoClient = require('mongodb').MongoClient;
+const dbUrl = 'mongodb://localhost:27017/';
+const doorsCollectionName = 'doors';
+const cardsCollectionName = 'cards';
 
 router.get('/checkCard',function (req, res) {
 	console.log(JSON.stringify(req.query));
@@ -36,6 +40,45 @@ function getCardById(id){
 			'door_interna'
 		]
 	};
+}
+
+function insertObject(collection, obj, ciao){
+    connection(function(db){
+        db.collection(collection).insertOne(obj, function (err, res) {
+            if (err) throw err;
+            console.log('Document '+JSON.stringify(obj) + ' inserted');
+            console.log(JSON.stringify(res));
+            ciao(err,res);
+        });
+    });
+}
+
+function connection  (callback) {
+    return MongoClient.connect(dbUrl, function(err, db){
+        if (err) throw err;
+        var dbo = db.db("artoo");
+        callback(dbo);
+    });
+}
+
+function getObject(collection,id,callback){
+    var query = {_id: id};
+    connection(function (db){
+        db.collection(collection).find(query).toArray(function(err, result) {
+            console.log(result);
+            callback(err,res);
+        });
+    });
+}
+
+function createCollection(name,callback){
+    connection(function(db){
+        db.createCollection(name, function (err, res){
+            if (err) throw err;
+            console.log("Collection created!");
+            callback(err,res);
+        });
+    });
 }
 
 module.exports = router;
