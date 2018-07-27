@@ -11,6 +11,9 @@ function createDb(url){
   		db.close();
 	});
 }
+
+createDb(url);
+
 /*
 
 function insertObject(id){
