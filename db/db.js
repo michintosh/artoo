@@ -18,24 +18,26 @@ insertObject('users',{name:'hello'});
 
 function insertObject(collection,obj){
 	MongoClient.connect(url, function(err, db) {
-  if (err) throw err;
-
-  dbo.collection(collection).insertOne(obj, function(err, res) {
-    if (err) throw err;
-    console.log("1 document inserted");
-    console.log(JSON.stringify(res));
-    db.close();
-  });
-}); 
+  		if (err) throw err;
+	  	db.collection(collection).insertOne(obj, function(err, res) {
+		    if (err) throw err;
+		    console.log("1 document inserted");
+		    console.log(JSON.stringify(res));
+		    db.close();
+	  	});
+	}); 
 
 }
 
 function createCollection(name){
-	dbo.createCollection(name, function(err, res) {
-    if (err) throw err;
-    console.log("Collection created!");
-    db.close();
-  });
+	MongoClient.connect(url, function(err, db) {
+	  	if (err) throw err;
+	  	db.createCollection(name, function(err, res) {
+		    if (err) throw err;
+		    console.log("Collection created!");
+		    db.close();
+	  	});
+	}); 
 }
 
 function deleteObject(id){
