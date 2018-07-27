@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const db = require('db/db');
 
 router.get('/checkCard',function (req, res) {
 	console.log(JSON.stringify(req.query));
@@ -20,7 +21,7 @@ router.get('/checkCard',function (req, res) {
 
 router.post('/addDoor', function (req, res){
 	if(req.body.name){
-		insertObject(doorsCollectionName, {name:req.body.name}, function(err){
+		db.insertObject(doorsCollectionName, {name:req.body.name}, function(err){
 			if(err)res.status(500).send({status: 'ERROR'});
 			res.status(200).send({status: 'OK'});
 		});
