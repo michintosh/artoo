@@ -32,6 +32,16 @@ router.post('/addDoor', function (req, res){
 	}
 });
 
+router.post('/authDoor', function (req, res){
+	if(req.body.cardId && req.body.doorId){
+		connection(function(db){
+			db.collection(cardsCollectionName).updateOne({_id:req.body.cardId}, {$push:{doors:{id:req.body.doorId}}}, function(err, res){
+				if(err) throw err;
+				console.log("Door authorized");
+			});
+		});
+	}
+});
 router.post('/addCard', function (req, res){
 	if(req.body){
 		req.body.password = md5(req.body.password);
