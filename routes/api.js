@@ -55,7 +55,7 @@ function getCardById(id){
 
 function insertObject(collection, obj, ciao){
     connection(function(db){
-        collection(collection).insertOne(obj, function (err, res) {
+        db.collection(collection).insertOne(obj, function (err, res) {
             if (err) throw err;
             console.log('Document '+JSON.stringify(obj) + ' inserted');
             console.log(JSON.stringify(res));
@@ -75,7 +75,7 @@ function connection  (callback) {
 function getObject(collection,id,callback){
     var query = {_id: id};
     connection(function (db){
-        collection(collection).find(query).toArray(function(err, result) {
+        db.collection(collection).find(query).toArray(function(err, result) {
             console.log(result);
             callback(err,res);
         });
@@ -84,7 +84,7 @@ function getObject(collection,id,callback){
 
 function createCollection(name,callback){
     connection(function(db){
-        createCollection(name, function (err, res){
+        db.createCollection(name, function (err, res){
             if (err) throw err;
             console.log("Collection created!");
             callback(err,res);
