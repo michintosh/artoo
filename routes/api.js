@@ -35,7 +35,7 @@ router.post('/addDoor', function (req, res){
 router.post('/authDoor', function (req, res){
 	if(req.body.cardId && req.body.doorId){
 		connection(function(db){
-			db.collection(cardsCollectionName).updateOne({_id:req.body.cardId}, {$push:{doors:{id:req.body.doorId}}}, function(err, result){
+			db.collection(cardsCollectionName).update({_id:req.body.cardId}, {$push:{doors:'hellodoor'}, function(err, result){
 				if(err) {
 					throw err;
 					res.status(500).send({status: 'ERROR'});		
