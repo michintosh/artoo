@@ -1,10 +1,10 @@
 var mongo = require('mongodb');
 	
 var MongoClient = require('mongodb').MongoClient;
-var url = 'mongodb://localhost:27017/artoo';
+var url = 'mongodb://localhost:27017/';
 
 
-function createDb(){
+function createDb(name){
 	MongoClient.connect(url, function(err, db) {
   		if (err) throw err;
   		console.log("Database created!");
@@ -12,14 +12,15 @@ function createDb(){
 	});
 }
 
-createDb(url);
+createDb(url + 'artoo');
 createCollection('users');
 insertObject('users',{name:'hello'});
 
 function insertObject(collection,obj){
 	MongoClient.connect(url, function(err, db) {
   		if (err) throw err;
-	  	db.collection(collection).insertOne(obj, function(err, res) {
+  		var dbo = db.db("artoo");
+	  	dbo.collection(collection).insertOne(obj, function(err, res) {
 		    if (err) throw err;
 		    console.log("1 document inserted");
 		    console.log(JSON.stringify(res));
@@ -32,7 +33,8 @@ function insertObject(collection,obj){
 function createCollection(name){
 	MongoClient.connect(url, function(err, db) {
 	  	if (err) throw err;
-	  	db.createCollection(name, function(err, res) {
+	  	var dbo = db.db('artoo');
+	  	dbo.createCollection(name, function(err, res) {
 		    if (err) throw err;
 		    console.log("Collection created!");
 		    db.close();
