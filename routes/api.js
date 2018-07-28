@@ -46,7 +46,7 @@ router.post('/authDoor', function (req, res){
 	if(req.body.cardId && req.body.doorId){
 
 
-		hasDoor(req.body.cardId, req.query.doorId, function(err, result){
+		hasDoor(req.body.cardId, req.body.doorId, function(err, result){
 			if(result == null){
 				connection(function(db){
 					db.collection(cardsCollectionName).updateOne({_id:ObjectId(req.body.cardId)}, {$push:{doors:{id:req.body.doorId}}}, function(err, result){
@@ -117,7 +117,7 @@ function hasDoor(cardId, doorId, callback){
 
 		if(result.length > 0){
 			for(var i=0; i<result[0].doors.length;i++ ){
-				console.log('Door ID: '+result[0].doors[i].id +' Card ID: ' +doorId);
+				console.log('Door ID: '+result[0].doors[i].id +' Card ID: ' + doorId);
 
 				if(result[0].doors[i].id === doorId) return callback(err,result[0].doors[i]);		
 				
