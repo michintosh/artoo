@@ -123,11 +123,10 @@ function hasDoor(cardId, doorId, callback){
 				
 			}
 		}
-		else return callback(err, {cardId:cardId, door:null});
+		else return callback(err, {cardId:null, door:null});
 		
 	});
 
-	callback(err, {cardId:null, door:null});
 	
 }
 
