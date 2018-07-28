@@ -114,7 +114,7 @@ router.post('/removeCard', function (req, res){
 				}
 			});
 		});*/
-		deleteObject(cardsCollectionName, {_id:ObjectId(req.body.cardId)}, function(err){
+		deleteObject(cardsCollectionName, req.body.cardId, function(err){
 			if(err)res.status(500).send({status: 'ERROR'});
 			res.status(200).send({status: 'OK'});
 		});
@@ -125,23 +125,19 @@ router.post('/removeCard', function (req, res){
 function insertObject(collection, obj, callback){
     connection(function(db){
         db.collection(collection).insertOne(obj, function (err, res) {
-            if (!err){
-            	console.log('Document '+JSON.stringify(obj) + ' inserted');
-            	console.log(JSON.stringify(res));
-            }
-            callback(err,res);
+        	console.log('Document '+JSON.stringify(obj) + ' inserted');
+        	console.log(JSON.stringify(res));
+        	callback(err,res);     
         });
     });
 }
 
-function deleteObject(collection, obj, callback){
+function deleteObject(collection, id, callback){
     connection(function(db){
-        db.collection(collection).deleteOne(obj, function (err, res) {
-            if (!err){
-            	console.log('Document '+JSON.stringify(obj) + ' deleted');
-            	console.log(JSON.stringify(res));
-            }
-            callback(err,res);
+        db.collection(collection).deleteOne({_id: ObjectId(id)}, function (err, res) {
+           	console.log('Document '+JSON.stringify(obj) + ' deleted');
+           	console.log(JSON.stringify(res));   
+            callback(err);
         });
     });
 }
