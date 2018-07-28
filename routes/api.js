@@ -37,17 +37,17 @@ router.get('/checkCard',function (req, res) {
 router.post('/addUser', function (req, res){
 	if(req.body){
 		req.body.password = md5(req.body.password);
-		insertObject(usersCollectionName, {name:req.body}, function(err){
+		insertObject(usersCollectionName, req.body, function(err){
 			if(err)res.status(500).send({status: 'ERROR'});
 			res.status(200).send({status: 'OK'});
 		});
 	}
 });
 
-router.post('/deleteUser', function (req, res){
+router.post('/removeUser', function (req, res){
 	if(req.body){
-		req.body.password = md5(req.body.password);
-		insertObject(usersCollectionName, {name:req.body}, function(err){
+		//req.body.password = md5(req.body.password);
+		deleteObject(usersCollectionName, req.body, function(err){
 			if(err)res.status(500).send({status: 'ERROR'});
 			res.status(200).send({status: 'OK'});
 		});
@@ -91,7 +91,6 @@ router.post('/authDoor', function (req, res){
 });
 router.post('/addCard', function (req, res){
 	if(req.body){
-		req.body.password = md5(req.body.password);
 		insertObject(cardsCollectionName, req.body, function(err){
 			if(err)res.status(500).send({status: 'ERROR'});
 			res.status(200).send({status: 'OK'});
