@@ -23,7 +23,7 @@ router.get('/checkCard',function (req, res) {
 						
 						console.log(result[0].doors[i] + ' '+ req.query.doorId);
 
-						if(result[0].doors[i] === req.query.doorId){
+						if(result[0].doors[i].id === req.query.doorId){
 							res.status(200).send({status: 'OK'});
 							return;
 						}
