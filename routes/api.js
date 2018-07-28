@@ -118,16 +118,17 @@ function hasDoor(cardId, doorId, callback){
 		if(result.length > 0){
 			for(var i=0; i<result[0].doors.length;i++ ){
 				console.log('Door ID: '+result[0].doors[i].id +' Card ID: ' + doorId);
-
-				if(result[0].doors[i].id === doorId) return callback(err,{cardId:cardId, door:result[0].doors[i]});		
-				
+				if(result[0].doors[i].id === doorId) {
+					callback(err,{cardId:cardId, door:result[0].doors[i]});
+					return;
+				}		
 			}
+			console.log("NO DOOR: exiting from for loop");
+			callback(err, {cardId:cardId, door:null});
+			return;
 		}
 		else callback(err, {cardId:null, door:null});
-		
 	});
-
-	
 }
 
 function createCollection(name,callback){
