@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const MongoClient = require('mongodb').MongoClient;
+const dbName = 'artoo';
 const dbUrl = 'mongodb://localhost:27017/';
 const doorsCollectionName = 'doors';
 const cardsCollectionName = 'cards';
@@ -12,8 +13,8 @@ router.get('/checkCard',function (req, res) {
 	if (req.query.cardId && req.query.doorId){
 		getObject(cardsCollectionName, req.query.cardId, function(err, result){
 			if(err) {
-				throw err;
-				res.status(500).send({status: 'ERROR'});		
+				res.status(500).send({status: 'ERROR'});
+                throw err;
 			} else {
 				console.log("result: " + JSON.stringify(result));
 				if(result){
@@ -45,8 +46,8 @@ router.post('/authDoor', function (req, res){
 		connection(function(db){
 			db.collection(cardsCollectionName).updateOne({_id:ObjectId(req.body.cardId)}, {$push:{doors:{id:req.body.doorId}}}, function(err, result){
 				if(err) {
-					throw err;
-					res.status(500).send({status: 'ERROR'});		
+					res.status(500).send({status: 'ERROR'});
+                    throw err;
 				} else {
 					res.status(200).send({status: 'OK'});
 					console.log("Door authorized");
@@ -66,13 +67,14 @@ router.post('/addCard', function (req, res){
 
 });
 
-function insertObject(collection, obj, ciao){
+function insertObject(collection, obj, callback){
     connection(function(db){
         db.collection(collection).insertOne(obj, function (err, res) {
-            if (err) throw err;
-            console.log('Document '+JSON.stringify(obj) + ' inserted');
-            console.log(JSON.stringify(res));
-            ciao(err,res);
+            if (!err){
+            	console.log('Document '+JSON.stringify(obj) + ' inserted');
+            	console.log(JSON.stringify(res));
+            }
+            callback(err,res);
         });
     });
 }
@@ -80,8 +82,7 @@ function insertObject(collection, obj, ciao){
 function connection  (callback) {
     return MongoClient.connect(dbUrl, function(err, db){
         if (err) throw err;
-        var dbo = db.db("artoo");
-        callback(dbo);
+        callback(db.db(dbName));
     });
 }
 
