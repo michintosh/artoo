@@ -81,14 +81,16 @@ router.post('/addCard', function (req, res){
 router.post('/removeCard', function (req, res){
 	if(req.body){
 		//req.body.password = md5(req.body.password);
-		db.collection(cardsCollectionName).deleteOne({_id:ObjectId(req.body.cardId)}, function(err, result){
-			if(err) {
-				res.status(500).send({status: 'ERROR'});
-	            throw err;
-			} else {
-				res.status(200).send({status: 'OK - Card Deleted'});
-				console.log("Card Deleted");
-			}
+		connection(function(db){
+			db.collection(cardsCollectionName).deleteOne({_id:ObjectId(req.body.cardId)}, function(err, result){
+				if(err) {
+					res.status(500).send({status: 'ERROR'});
+		            throw err;
+				} else {
+					res.status(200).send({status: 'OK - Card Deleted'});
+					console.log("Card Deleted");
+				}
+			});
 		});
 	}
 
