@@ -16,11 +16,18 @@ router.get('/checkCard',function (req, res) {
 				res.status(500).send({status: 'ERROR'});
                 throw err;
 			} else {
-				var door = hasDoor(req.query.cardId, req.query.doorId)
-				console.log('Door has this result: '+JSON.stringify(door));
-				if(door != null) res.status(200).send({status: 'OK'});
-				else res.status(200).send({status: 'NO'});
-				console.log("Card checked");
+				var door = hasDoor(req.query.cardId, req.query.doorId, function(err, result){
+					if(err) {
+						res.status(500).send({status: 'ERROR'});
+		                throw err;
+					} else {
+						console.log('Door has this result: '+JSON.stringify(result);
+						if(result != null) res.status(200).send({status: 'OK'});
+						else res.status(200).send({status: 'NO'});
+						console.log("Card checked");
+					}
+				})
+				
 			}
 		});
 	}
@@ -99,7 +106,7 @@ function getObject(collection,id,callback){
     });
 }
 
-function hasDoor(cardId, doorId){
+function hasDoor(cardId, doorId, callback){
 	getObject(cardsCollectionName, cardId, function(err, result){
 		if (err) throw err;
 		console.log('OGGETTO JSON: '+ JSON.stringify(result));
@@ -108,11 +115,12 @@ function hasDoor(cardId, doorId){
 			for(var i=0; i<result[0].doors.length;i++ ){
 			console.log('Door ID: '+result[0].doors[i].id +' Card ID: ' +doorId);
 
-				if(result[0].doors[i].id === doorId) return result[0].doors[i];
+				if(result[0].doors[i].id === doorId) callback(err,result[0].doors[i]);
 			}
 		}
+		callback(err, null);
 	});
-	return null;
+	
 }
 
 function createCollection(name,callback){
