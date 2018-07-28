@@ -115,7 +115,10 @@ function hasDoor(cardId, doorId, callback){
 			for(var i=0; i<result[0].doors.length;i++ ){
 			console.log('Door ID: '+result[0].doors[i].id +' Card ID: ' +doorId);
 
-				if(result[0].doors[i].id === doorId) callback(err,result[0].doors[i]);
+				if(result[0].doors[i].id === doorId) {
+					callback(err,result[0].doors[i]);
+					break;
+				}
 			}
 		}
 		callback(err, null);
