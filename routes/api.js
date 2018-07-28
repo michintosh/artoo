@@ -9,7 +9,7 @@ const ObjectId = require('mongodb').ObjectID;
 const md5 = require('md5');
 
 router.get('/checkCard',function (req, res) {
-	console.log(JSON.stringify(req.query));
+	//console.log(JSON.stringify(req.query));
 	if (req.query.cardId && req.query.doorId){
 		getObject(cardsCollectionName, req.query.cardId, function(err, result){
 			if(err) {
@@ -88,12 +88,12 @@ function connection  (callback) {
 function getObject(collection,id,callback){
     var query = {_id: ObjectId(id)};
 
-	console.log(id);
-	console.log(JSON.stringify(query));
+	//console.log(id);
+	//console.log(JSON.stringify(query));
 
     connection(function (db){
         db.collection(collection).find(query).toArray(function(err, result) {
-            console.log(result);
+            //console.log(result);
             callback(err,result);
         });
     });
