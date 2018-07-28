@@ -5,6 +5,7 @@ const dbName = 'artoo';
 const dbUrl = 'mongodb://localhost:27017/';
 const doorsCollectionName = 'doors';
 const cardsCollectionName = 'cards';
+const usersCollectionName = 'users';
 const ObjectId = require('mongodb').ObjectID;
 const md5 = require('md5');
 
@@ -29,6 +30,16 @@ router.get('/checkCard',function (req, res) {
 				})
 				
 			}
+		});
+	}
+});
+
+router.post('/addUser', function (req, res){
+	if(req.body){
+		req.body.password = md5(req.body.password);
+		insertObject(usersCollectionName, {name:req.body}, function(err){
+			if(err)res.status(500).send({status: 'ERROR'});
+			res.status(200).send({status: 'OK'});
 		});
 	}
 });
