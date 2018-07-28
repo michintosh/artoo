@@ -49,7 +49,7 @@ router.post('/authDoor', function (req, res){
 		hasDoor(req.body.cardId, req.body.doorId, function(err, result){
 			console.log('Auth Door Result: '+JSON.stringify(result));
 
-			if(result.doorId == null && result.cardId != null){
+			if(result.door == null && result.cardId != null){
 				connection(function(db){
 					db.collection(cardsCollectionName).updateOne({_id:ObjectId(req.body.cardId)}, {$push:{doors:{id:req.body.doorId}}}, function(err, result){
 						if(err) {
