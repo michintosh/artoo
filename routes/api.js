@@ -18,6 +18,7 @@ router.get('/checkCard',function (req, res) {
 			} else {
 				console.log("result: " + JSON.stringify(result[0]));
 				if(result){
+					console.log("result2: " + JSON.stringify(result[0]));
 					for(var i=0; i<result[0].doors.length;i++ ){
 						if(result.doors[i] === req.query.doorId){
 							res.status(200).send({status: 'OK'});
