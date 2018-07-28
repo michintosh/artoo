@@ -47,7 +47,7 @@ router.post('/addUser', function (req, res){
 router.post('/removeUser', function (req, res){
 	if(req.body){
 		//req.body.password = md5(req.body.password);
-		deleteObject(usersCollectionName, req.body, function(err){
+		deleteObject(usersCollectionName, req.body.id, function(err){
 			if(err)res.status(500).send({status: 'ERROR'});
 			res.status(200).send({status: 'OK'});
 		});
