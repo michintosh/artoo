@@ -17,7 +17,7 @@ router.get('/checkCard',function (req, res) {
                 throw err;
 			} else {
 
-				if(hasDoor(result[0], req.query.doorId) != null) res.status(200).send({status: 'OK'});
+				if(hasDoor(req.query.cardId, req.query.doorId) != null) res.status(200).send({status: 'OK'});
 				else res.status(200).send({status: 'NO'});
 				console.log("Card checked");
 			}
@@ -36,17 +36,22 @@ router.post('/addDoor', function (req, res){
 
 router.post('/authDoor', function (req, res){
 	if(req.body.cardId && req.body.doorId){
-		connection(function(db){
-			db.collection(cardsCollectionName).updateOne({_id:ObjectId(req.body.cardId)}, {$push:{doors:{id:req.body.doorId}}}, function(err, result){
-				if(err) {
-					res.status(500).send({status: 'ERROR'});
-                    throw err;
-				} else {
-					res.status(200).send({status: 'OK'});
-					console.log("Door authorized");
-				}
+
+		if(hasDoor(req.body.cardId, req.query.doorId) == null){
+
+			connection(function(db){
+				db.collection(cardsCollectionName).updateOne({_id:ObjectId(req.body.cardId)}, {$push:{doors:{id:req.body.doorId}}}, function(err, result){
+					if(err) {
+						res.status(500).send({status: 'ERROR'});
+	                    throw err;
+					} else {
+						res.status(200).send({status: 'OK'});
+						console.log("Door authorized");
+					}
+				});
 			});
-		});
+		}
+		else res.status(200).send({status: 'ERROR'});
 	}
 });
 router.post('/addCard', function (req, res){
@@ -93,10 +98,13 @@ function getObject(collection,id,callback){
     });
 }
 
-function hasDoor(card, doorId){
-	for(var i=0; i<card.doors.length;i++ ){
-		if(card.doors[i].id === doorId) return card.doors[i];
-	}
+function hasDoor(cardId, doorId){
+	getObject(cardsCollectionName, req.query.cardId, function(err, result){
+		if (err) throw err;
+		for(var i=0; i<result[0].doors.length;i++ ){
+			if(result[0].doors[i].id === doorId) return result[0].doors[i];
+		}
+	});
 	return null;
 }
 
