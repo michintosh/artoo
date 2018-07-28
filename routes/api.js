@@ -22,7 +22,7 @@ router.get('/checkCard',function (req, res) {
 		                throw err;
 					} else {
 						console.log('Door has this result: '+JSON.stringify(result));
-						if(result != null) res.status(200).send({status: 'OK'});
+						if(result.doorId != null) res.status(200).send({status: 'OK'});
 						else res.status(200).send({status: 'NO'});
 						console.log("Card checked");
 					}
@@ -47,7 +47,7 @@ router.post('/authDoor', function (req, res){
 
 
 		hasDoor(req.body.cardId, req.body.doorId, function(err, result){
-			if(result == null){
+			if(result.doorId == null && result.cardId != null){
 				connection(function(db){
 					db.collection(cardsCollectionName).updateOne({_id:ObjectId(req.body.cardId)}, {$push:{doors:{id:req.body.doorId}}}, function(err, result){
 						if(err) {
@@ -119,12 +119,15 @@ function hasDoor(cardId, doorId, callback){
 			for(var i=0; i<result[0].doors.length;i++ ){
 				console.log('Door ID: '+result[0].doors[i].id +' Card ID: ' + doorId);
 
-				if(result[0].doors[i].id === doorId) return callback(err,result[0].doors[i]);		
+				if(result[0].doors[i].id === doorId) return callback(err,{cardId:cardId, door:result[0].doors[i]});		
 				
 			}
 		}
-		callback(err, null);
+		else return callback(err, {cardId:cardId, door:null});
+		
 	});
+
+	callback(err, {cardId:null, door:null});
 	
 }
 
