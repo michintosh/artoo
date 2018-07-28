@@ -21,7 +21,7 @@ router.get('/checkCard',function (req, res) {
 						res.status(500).send({status: 'ERROR'});
 		                throw err;
 					} else {
-						console.log('Door has this result: '+JSON.stringify(result);
+						console.log('Door has this result: '+JSON.stringify(result));
 						if(result != null) res.status(200).send({status: 'OK'});
 						else res.status(200).send({status: 'NO'});
 						console.log("Card checked");
