@@ -16,20 +16,9 @@ router.get('/checkCard',function (req, res) {
 				res.status(500).send({status: 'ERROR'});
                 throw err;
 			} else {
-				console.log("result: " + JSON.stringify(result[0]));
-				if(result){
-					console.log("result2: " + JSON.stringify(result[0].doors));
-					for(var i=0; i<result[0].doors.length;i++ ){
-						
-						console.log(result[0].doors[i] + ' '+ req.query.doorId);
 
-						if(result[0].doors[i].id === req.query.doorId){
-							res.status(200).send({status: 'OK'});
-							return;
-						}
-					}
-				}
-				res.status(200).send({status: 'NO'});
+				if(hasDoor(result[0], req.query.doorId) != null) res.status(200).send({status: 'OK'});
+				else res.status(200).send({status: 'NO'});
 				console.log("Card checked");
 			}
 		});
@@ -102,6 +91,13 @@ function getObject(collection,id,callback){
             callback(err,result);
         });
     });
+}
+
+function hasDoor(card, doorId){
+	for(var i=0; i<card.doors.length;i++ ){
+		if(card.doors[i].id === doorId) return card.doors[i];
+	}
+	return null;
 }
 
 function createCollection(name,callback){
