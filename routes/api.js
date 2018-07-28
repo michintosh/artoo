@@ -45,21 +45,25 @@ router.post('/addDoor', function (req, res){
 router.post('/authDoor', function (req, res){
 	if(req.body.cardId && req.body.doorId){
 
-		if(hasDoor(req.body.cardId, req.query.doorId) == null){
 
-			connection(function(db){
-				db.collection(cardsCollectionName).updateOne({_id:ObjectId(req.body.cardId)}, {$push:{doors:{id:req.body.doorId}}}, function(err, result){
-					if(err) {
-						res.status(500).send({status: 'ERROR'});
-	                    throw err;
-					} else {
-						res.status(200).send({status: 'OK'});
-						console.log("Door authorized");
-					}
+		hasDoor(req.body.cardId, req.query.doorId, function(err, result){
+			if(result == null){
+				connection(function(db){
+					db.collection(cardsCollectionName).updateOne({_id:ObjectId(req.body.cardId)}, {$push:{doors:{id:req.body.doorId}}}, function(err, result){
+						if(err) {
+							res.status(500).send({status: 'ERROR'});
+	                    	throw err;
+						} else {
+							res.status(200).send({status: 'OK'});
+							console.log("Door authorized");
+						}
+					});
 				});
-			});
-		}
-		else res.status(200).send({status: 'ERROR'});
+			}else{
+				res.status(200).send({status: 'ERROR'});
+			}
+
+		});
 	}
 });
 router.post('/addCard', function (req, res){
