@@ -101,6 +101,8 @@ function getObject(collection,id,callback){
 function hasDoor(cardId, doorId){
 	getObject(cardsCollectionName, cardId, function(err, result){
 		if (err) throw err;
+		console.log('OGGETTO JSON: '+ JSON.stringify(result));
+
 		if(result.length > 0){
 			for(var i=0; i<result[0].doors.length;i++ ){
 				if(result[0].doors[i].id === doorId) return result[0].doors[i];
