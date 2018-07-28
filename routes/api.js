@@ -44,6 +44,16 @@ router.post('/addUser', function (req, res){
 	}
 });
 
+router.post('/deleteUser', function (req, res){
+	if(req.body){
+		req.body.password = md5(req.body.password);
+		insertObject(usersCollectionName, {name:req.body}, function(err){
+			if(err)res.status(500).send({status: 'ERROR'});
+			res.status(200).send({status: 'OK'});
+		});
+	}
+});
+
 router.post('/addDoor', function (req, res){
 	if(req.body.name){
 		insertObject(doorsCollectionName, {name:req.body.name}, function(err){
@@ -92,6 +102,7 @@ router.post('/addCard', function (req, res){
 router.post('/removeCard', function (req, res){
 	if(req.body){
 		//req.body.password = md5(req.body.password);
+		/*
 		connection(function(db){
 			db.collection(cardsCollectionName).deleteOne({_id:ObjectId(req.body.cardId)}, function(err, result){
 				if(err) {
@@ -102,6 +113,10 @@ router.post('/removeCard', function (req, res){
 					console.log("Card Deleted");
 				}
 			});
+		});*/
+		deleteObject(cardsCollectionName, {_id:ObjectId(req.body.cardId)}, function(err){
+			if(err)res.status(500).send({status: 'ERROR'});
+			res.status(200).send({status: 'OK'});
 		});
 	}
 
@@ -112,6 +127,18 @@ function insertObject(collection, obj, callback){
         db.collection(collection).insertOne(obj, function (err, res) {
             if (!err){
             	console.log('Document '+JSON.stringify(obj) + ' inserted');
+            	console.log(JSON.stringify(res));
+            }
+            callback(err,res);
+        });
+    });
+}
+
+function deleteObject(collection, obj, callback){
+    connection(function(db){
+        db.collection(collection).deleteOne(obj, function (err, res) {
+            if (!err){
+            	console.log('Document '+JSON.stringify(obj) + ' deleted');
             	console.log(JSON.stringify(res));
             }
             callback(err,res);
