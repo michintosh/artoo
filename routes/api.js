@@ -105,6 +105,8 @@ function hasDoor(cardId, doorId){
 
 		if(result.length > 0){
 			for(var i=0; i<result[0].doors.length;i++ ){
+			console.log('Door ID: '+result[0].doors[i].id +' Card ID: ' +doorId);
+
 				if(result[0].doors[i].id === doorId) return result[0].doors[i];
 			}
 		}
