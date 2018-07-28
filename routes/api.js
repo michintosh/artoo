@@ -135,7 +135,7 @@ function insertObject(collection, obj, callback){
 function deleteObject(collection, id, callback){
     connection(function(db){
         db.collection(collection).deleteOne({_id: ObjectId(id)}, function (err, res) {
-           	console.log('Document '+JSON.stringify(obj) + ' deleted');
+           	console.log('Document '+JSON.stringify(id) + ' deleted');
            	console.log(JSON.stringify(res));   
             callback(err);
         });
