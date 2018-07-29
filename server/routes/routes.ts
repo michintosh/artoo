@@ -1,6 +1,7 @@
 import * as express from 'express';
 import UserCtrl from '../controllers/user';
-import User from '../models/user';
+import DoorCtrl from '../controllers/door';
+import CardCtrl from '../controllers/card';
 
 export default function setRoutes(app) {
 

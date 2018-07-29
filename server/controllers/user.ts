@@ -31,7 +31,7 @@ export default class UserCtrl extends BaseCtrl {
       req.body,
       function (err, user) {
         console.log(JSON.stringify(err));
-        if (err) return res.status(500).send("There was a problem registering the user`.");
+        if (err) return res.status(500).send('There was a problem registering the user.');
 
         let token = jwt.sign({ id: user._id }, 'XyZ2018yAcCeSsi', {
           expiresIn: 86400
