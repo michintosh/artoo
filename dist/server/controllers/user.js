@@ -14,6 +14,7 @@ var jwt = require("jsonwebtoken");
 var user_1 = require("../models/user");
 var base_1 = require("./base");
 var bcrypt = require("bcryptjs");
+var app_1 = require("../app");
 var UserCtrl = /** @class */ (function (_super) {
     __extends(UserCtrl, _super);
     function UserCtrl() {
@@ -28,7 +29,7 @@ var UserCtrl = /** @class */ (function (_super) {
                     if (!isMatch) {
                         return res.sendStatus(403);
                     }
-                    var token = jwt.sign({ user: user }, 'XyZ2018yAcCeSsi', { expiresIn: 86400 });
+                    var token = jwt.sign({ user: user }, app_1.jwtSecret, { expiresIn: 86400 });
                     res.status(200).json({ auth: true, token: token });
                 });
             });
@@ -43,8 +44,8 @@ var UserCtrl = /** @class */ (function (_super) {
             user_1.default.create(req.body, function (err, user) {
                 console.log(JSON.stringify(err));
                 if (err)
-                    return res.status(500).send("There was a problem registering the user`.");
-                var token = jwt.sign({ id: user._id }, 'XyZ2018yAcCeSsi', {
+                    return res.status(500).send('There was a problem registering the user.');
+                var token = jwt.sign({ id: user._id }, app_1.jwtSecret, {
                     expiresIn: 86400
                 });
                 res.status(200).send({ auth: true, token: token });

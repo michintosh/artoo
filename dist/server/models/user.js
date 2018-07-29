@@ -5,27 +5,22 @@ var mongoose = require("mongoose");
 var userSchema = new mongoose.Schema({
     username: String,
     email: { type: String, unique: true, lowercase: true, trim: true },
-    password: String
+    password: String,
+    userType: String
 });
 // Before saving the user, hash the password
-userSchema.pre('save', function (next) {
-    var user = this;
-    if (!user.isModified('password')) {
-        return next();
-    }
-    bcrypt.genSalt(8, function (err, salt) {
-        if (err) {
-            return next(err);
-        }
-        bcrypt.hash(user.password, salt, function (error, hash) {
-            if (error) {
-                return next(error);
-            }
-            user.password = hash;
-            next();
-        });
+/*userSchema.pre('save', function(next) {
+  const user = this;
+  if (!user.isModified('password')) { return next(); }
+  bcrypt.genSalt(8, function(err, salt) {
+    if (err) { return next(err); }
+    bcrypt.hash(user.password, salt, function(error, hash) {
+      if (error) { return next(error); }
+      user.password = hash;
+      next();
     });
-});
+  });
+});*/
 userSchema.methods.comparePassword = function (candidatePassword, callback) {
     bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
         if (err) {
@@ -37,7 +32,7 @@ userSchema.methods.comparePassword = function (candidatePassword, callback) {
 // Omit the password when returning a user
 userSchema.set('toJSON', {
     transform: function (doc, ret, options) {
-        delete ret.password;
+        //delete ret.password;
         return ret;
     }
 });

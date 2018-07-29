@@ -2,6 +2,8 @@ import * as express from 'express';
 import UserCtrl from '../controllers/user';
 import DoorCtrl from '../controllers/door';
 import CardCtrl from '../controllers/card';
+import {jwtSecret} from '../app';
+import * as jwt from 'jsonwebtoken';
 
 export default function setRoutes(app) {
 
@@ -10,6 +12,11 @@ export default function setRoutes(app) {
   const userCtrl = new UserCtrl();
   const doorCtrl = new DoorCtrl();
   const cardCtrl = new CardCtrl();
+
+  //router.route('/').post(auth);
+  //router.route('/').put(auth);
+  //router.route('/').delete(auth);
+  //router.route('/').delete(auth);
 
   router.route('/login').post(userCtrl.login);
   router.route('/register').post(userCtrl.register);
@@ -30,6 +37,20 @@ export default function setRoutes(app) {
   router.route('/card/:id').get(cardCtrl.get);
   router.route('/card/:id').delete(cardCtrl.delete);
 
-
   app.use('/api', router);
+
+}
+
+export function auth(req, res, next){
+  console.log(JSON.stringify(req));
+
+  let token = req.headers['x-access-token'];
+  if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
+
+  jwt.verify(token, jwtSecret, function(err, decoded) {
+    if (err) return res.status(500).send({auth: false, message: 'Failed to authenticate token.'});
+
+    req.userId = decoded.id;
+    next();
+  });
 }

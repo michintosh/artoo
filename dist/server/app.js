@@ -6,11 +6,13 @@ var path = require("path");
 var routes_1 = require("./routes/routes");
 var app = express();
 exports.app = app;
+var jwtSecret = 'XyZ2018yAcCeSsi';
+exports.jwtSecret = jwtSecret;
 app.set('port', (process.env.PORT || 3000));
 app.use('/', express.static(path.join(__dirname, '../public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-var mongodbURI = 'mongodb://192.168.44.230:27017/artoo';
+var mongodbURI = 'mongodb://localhost:27017/artoo';
 exports.mongodbURI = mongodbURI;
 mongoose.Promise = global.Promise;
 mongoose.connect(mongodbURI)

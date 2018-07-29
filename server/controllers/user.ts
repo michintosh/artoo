@@ -2,16 +2,20 @@ import * as jwt from 'jsonwebtoken';
 import User from '../models/user';
 import BaseCtrl from './base';
 import * as bcrypt from 'bcryptjs';
+import {jwtSecret} from '../app';
 
 export default class UserCtrl extends BaseCtrl {
+
   model = User;
 
   login = (req, res) => {
     this.model.findOne({ email: req.body.email }, (err, user) => {
       if (!user) { return res.sendStatus(403); }
+
+
       user.comparePassword(req.body.password, (error, isMatch) => {
         if (!isMatch) { return res.sendStatus(403); }
-        const token = jwt.sign({ user: user }, 'XyZ2018yAcCeSsi', {expiresIn: 86400 });
+        const token = jwt.sign({ user: user }, jwtSecret, {expiresIn: 86400 });
         res.status(200).json({  auth: true, token: token });
       });
     });
@@ -33,7 +37,7 @@ export default class UserCtrl extends BaseCtrl {
         console.log(JSON.stringify(err));
         if (err) return res.status(500).send('There was a problem registering the user.');
 
-        let token = jwt.sign({ id: user._id }, 'XyZ2018yAcCeSsi', {
+        const token = jwt.sign({ id: user._id }, jwtSecret, {
           expiresIn: 86400
         });
         res.status(200).send({ auth: true, token: token });

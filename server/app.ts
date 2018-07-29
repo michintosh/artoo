@@ -3,6 +3,7 @@ import * as mongoose from 'mongoose';
 import * as path from 'path';
 import setRoutes from './routes/routes';
 const app = express();
+const jwtSecret  = 'XyZ2018yAcCeSsi';
 
 app.set('port', (process.env.PORT || 3000));
 
@@ -10,7 +11,7 @@ app.use('/', express.static(path.join(__dirname, '../public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-const mongodbURI = 'mongodb://192.168.44.230:27017/artoo';
+const mongodbURI = 'mongodb://localhost:27017/artoo';
 
 
 mongoose.Promise = global.Promise;
@@ -30,4 +31,4 @@ mongoose.connect(mongodbURI)
   })
   .catch(err => console.error(err));
 
-export { app, mongodbURI };
+export { app, mongodbURI, jwtSecret};

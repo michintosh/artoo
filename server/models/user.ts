@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
 });
 
 // Before saving the user, hash the password
-userSchema.pre('save', function(next) {
+/*userSchema.pre('save', function(next) {
   const user = this;
   if (!user.isModified('password')) { return next(); }
   bcrypt.genSalt(8, function(err, salt) {
@@ -20,7 +20,7 @@ userSchema.pre('save', function(next) {
       next();
     });
   });
-});
+});*/
 
 userSchema.methods.comparePassword = function(candidatePassword, callback) {
   bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
@@ -32,7 +32,7 @@ userSchema.methods.comparePassword = function(candidatePassword, callback) {
 // Omit the password when returning a user
 userSchema.set('toJSON', {
   transform: function(doc, ret, options) {
-    delete ret.password;
+    //delete ret.password;
     return ret;
   }
 });
