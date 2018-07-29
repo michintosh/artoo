@@ -3,23 +3,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var mongoose = require("mongoose");
 var path = require("path");
-var dotenv = require("dotenv");
 var routes_1 = require("./routes/routes");
-require('dotenv').config();
 var app = express();
 exports.app = app;
-dotenv.load({ path: '.env' });
 app.set('port', (process.env.PORT || 3000));
 app.use('/', express.static(path.join(__dirname, '../public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-var mongodbURI = 'mongodb://localhost:27017/artoo';
-/*if (process.env.NODE_ENV === 'test') {
-  mongodbURI = process.env.MONGODB_TEST_URI;
-} else {
-  mongodbURI = process.env.MONGODB_URI;
-  app.use(morgan('dev'));
-}*/
+var mongodbURI = 'mongodb://192.168.44.230:27017/artoo';
+exports.mongodbURI = mongodbURI;
 mongoose.Promise = global.Promise;
 mongoose.connect(mongodbURI)
     .then(function (db) {
