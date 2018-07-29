@@ -11,16 +11,30 @@ export default class UserCtrl extends BaseCtrl {
   login = (req, res) => {
     this.model.findOne({ email: req.body.email }, (err, user) => {
       if (!user) { return res.sendStatus(403); }
+      const passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+      console.log('Crypting: ' + passwordIsValid);
+      if (!passwordIsValid) {
+        console.log('Not same password: ' + bcrypt.hashSync(req.body.password, 8) + ' ' + user.password );
+        return res.sendStatus(403);
+      } else {
+        console.log('Same password: ' + bcrypt.hashSync(req.body.password, 8) + ' ' + user.password );
+        const token = jwt.sign({ user: user }, jwtSecret, {expiresIn: 86400 });
+        res.status(200).json({  auth: true, token: token });
+      }
 
+<<<<<<< HEAD
       if (bcrypt.hashSync(req.body.password, 8) === user.password){
         res.status(200).json({  auth: true, token: token });
       }
 
+=======
+      /*
+>>>>>>> 9d39ae2e996c94040ea13071f6a7290387950add
       user.comparePassword(req.body.password, (error, isMatch) => {
         if (!isMatch) { return res.sendStatus(403); }
         const token = jwt.sign({ user: user }, jwtSecret, {expiresIn: 86400 });
         res.status(200).json({  auth: true, token: token });
-      });
+      });*/
     });
   };
 

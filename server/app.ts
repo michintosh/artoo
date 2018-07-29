@@ -7,7 +7,7 @@ const jwtSecret  = 'XyZ2018yAcCeSsi';
 
 app.set('port', (process.env.PORT || 3000));
 
-app.use('/', express.static(path.join(__dirname, '../public')));
+app.use('/', express.static(path.join(__dirname, '../artoo')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -21,9 +21,13 @@ mongoose.connect(mongodbURI)
 
     setRoutes(app);
 
-    app.get('/*', function(req, res) {
-      res.sendFile(path.join(__dirname, '../public/index.html'));
+    app.get('*', function(req, res) {
+      res.sendFile(path.join(__dirname, '../artoo/index.html'));
     });
+
+
+
+
 
     if (!module.parent) {
       app.listen(app.get('port'), () => console.log(`Angular Full Stack listening on port ${app.get('port')}`));
