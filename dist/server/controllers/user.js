@@ -25,13 +25,23 @@ var UserCtrl = /** @class */ (function (_super) {
                 if (!user) {
                     return res.sendStatus(403);
                 }
-                user.comparePassword(req.body.password, function (error, isMatch) {
-                    if (!isMatch) {
-                        return res.sendStatus(403);
-                    }
+                var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
+                console.log('Crypting: ' + passwordIsValid);
+                if (!passwordIsValid) {
+                    console.log('Not same password: ' + bcrypt.hashSync(req.body.password, 8) + ' ' + user.password);
+                    return res.sendStatus(403);
+                }
+                else {
+                    console.log('Same password: ' + bcrypt.hashSync(req.body.password, 8) + ' ' + user.password);
                     var token = jwt.sign({ user: user }, app_1.jwtSecret, { expiresIn: 86400 });
                     res.status(200).json({ auth: true, token: token });
-                });
+                }
+                /*
+                user.comparePassword(req.body.password, (error, isMatch) => {
+                  if (!isMatch) { return res.sendStatus(403); }
+                  const token = jwt.sign({ user: user }, jwtSecret, {expiresIn: 86400 });
+                  res.status(200).json({  auth: true, token: token });
+                });*/
             });
         };
         _this.logout = function (req, res) {

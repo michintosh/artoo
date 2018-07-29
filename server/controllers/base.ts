@@ -1,3 +1,5 @@
+import {ObjectID} from 'mongodb';
+
 abstract class BaseCtrl {
 
   abstract model: any;
@@ -30,7 +32,7 @@ abstract class BaseCtrl {
   };
 
   get = (req, res) => {
-    this.model.findOne({ _id: req.query.id }, (err, item) => {
+    this.model.findOne({ _id: ObjectID(req.params.id )}, (err, item) => {
       if (err) { return console.error(err); }
       res.status(200).json(item);
     });
