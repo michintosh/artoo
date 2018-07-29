@@ -14,7 +14,7 @@ app.use('/', express.static(path.join(__dirname, '../public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-let mongodbURI = 'mongodb://192.168.44.230:27017/artoo';
+let mongodbURI = 'mongodb://localhost:27017/artoo';
 /*if (process.env.NODE_ENV === 'test') {
   mongodbURI = process.env.MONGODB_TEST_URI;
 } else {
