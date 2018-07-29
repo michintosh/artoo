@@ -12,6 +12,9 @@ export default class UserCtrl extends BaseCtrl {
     this.model.findOne({ email: req.body.email }, (err, user) => {
       if (!user) { return res.sendStatus(403); }
 
+      if (bcrypt.hashSync(req.body.password, 8) === user.password){
+        res.status(200).json({  auth: true, token: token });
+      }
 
       user.comparePassword(req.body.password, (error, isMatch) => {
         if (!isMatch) { return res.sendStatus(403); }
