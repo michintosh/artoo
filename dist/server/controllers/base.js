@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var mongodb_1 = require("mongodb");
 var BaseCtrl = /** @class */ (function () {
     function BaseCtrl() {
         var _this = this;
@@ -32,7 +33,7 @@ var BaseCtrl = /** @class */ (function () {
             });
         };
         this.get = function (req, res) {
-            _this.model.findOne({ _id: req.params.id }, function (err, item) {
+            _this.model.findOne({ _id: mongodb_1.ObjectID(req.params.id) }, function (err, item) {
                 if (err) {
                     return console.error(err);
                 }
