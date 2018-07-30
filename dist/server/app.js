@@ -8,15 +8,17 @@ var app = express();
 exports.app = app;
 var jwtSecret = 'XyZ2018yAcCeSsi';
 exports.jwtSecret = jwtSecret;
-app.set('port', (process.env.PORT || 3000));
+app.set('port', (process.env.PORT || 8080));
 app.use('/', express.static(path.join(__dirname, '../artoo')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 var mongodbURI = 'mongodb://localhost:27017/artoo';
 exports.mongodbURI = mongodbURI;
+//let db;
 mongoose.Promise = global.Promise;
 mongoose.connect(mongodbURI)
     .then(function (db) {
+    //db = db;
     console.log('Connected to MongoDB');
     routes_1.default(app);
     app.get('*', function (req, res) {

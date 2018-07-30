@@ -5,18 +5,19 @@ import setRoutes from './routes/routes';
 const app = express();
 const jwtSecret  = 'XyZ2018yAcCeSsi';
 
-app.set('port', (process.env.PORT || 3000));
+app.set('port', (process.env.PORT || 8080));
 
 app.use('/', express.static(path.join(__dirname, '../artoo')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 const mongodbURI = 'mongodb://localhost:27017/artoo';
-
+//let db;
 
 mongoose.Promise = global.Promise;
 mongoose.connect(mongodbURI)
   .then(db => {
+    //db = db;
     console.log('Connected to MongoDB');
 
     setRoutes(app);

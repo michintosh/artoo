@@ -22,14 +22,7 @@ export default class UserCtrl extends BaseCtrl {
         res.status(200).json({  auth: true, token: token });
       }
 
-<<<<<<< HEAD
-      if (bcrypt.hashSync(req.body.password, 8) === user.password){
-        res.status(200).json({  auth: true, token: token });
-      }
-
-=======
       /*
->>>>>>> 9d39ae2e996c94040ea13071f6a7290387950add
       user.comparePassword(req.body.password, (error, isMatch) => {
         if (!isMatch) { return res.sendStatus(403); }
         const token = jwt.sign({ user: user }, jwtSecret, {expiresIn: 86400 });
@@ -60,5 +53,27 @@ export default class UserCtrl extends BaseCtrl {
         res.status(200).send({ auth: true, token: token });
       });
   };
+
+
+/*
+  checkSession = (req, res) => {
+
+    console.log('checkSession');
+    if(!(req.headers['x-access-token'])){
+      console.log("No token");
+      res.status(401).send({ auth: false, message: 'No token provided.' });
+    } else {
+      const token = jwt.sign({ id: user._id }, jwtSecret, {
+          expiresIn: 86400
+        });
+      jwt.verify(token, jwtSecret, function(err, decoded) {
+      if (err) return res.status(500).send({auth: false, message: 'Failed to authenticate token.'});
+      console.log('token verified: ')
+      req.userId = decoded.id;
+      next();
+      });
+    }
+  }*/
+    
 
 }
