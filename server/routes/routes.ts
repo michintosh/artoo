@@ -46,7 +46,7 @@ export function auth(req, res, next){
   console.log('hauth');
   console.log(req.originalUrl);
 
-  if (req.originalUrl.indexOf('login')> 0 || req.originalUrl.indexOf('register')> 0 || req.originalUrl.indexOf('logout')> 0){
+  if (req.originalUrl.indexOf('login') > 0 || req.originalUrl.indexOf('register')> 0 || req.originalUrl.indexOf('logout') > 0){
     next();
     return;
   }
@@ -56,7 +56,7 @@ export function auth(req, res, next){
 
   jwt.verify(token, jwtSecret, function(err, decoded) {
     if (err) return res.status(500).send({auth: false, message: 'Failed to authenticate token.'});
-    console.log('token verified: ')
+    console.log('token verified: ');
     req.userId = decoded.id;
     next();
   });
