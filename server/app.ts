@@ -5,7 +5,7 @@ import setRoutes from './routes/routes';
 const app = express();
 const jwtSecret  = 'XyZ2018yAcCeSsi';
 
-app.set('port', (process.env.PORT || 8080));
+app.set('port', (process.env.PORT || 3000));
 
 app.use('/', express.static(path.join(__dirname, '../artoo')));
 app.use(express.json());
