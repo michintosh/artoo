@@ -122,12 +122,7 @@ export function auth(req, res, next){
   console.log('hauth');
   console.log(req.originalUrl);
 
-<<<<<<< HEAD
-
-  if (req.originalUrl.indexOf('login')> 0 || req.originalUrl.indexOf('register')> 0 || req.originalUrl.indexOf('logout')> 0){
-=======
   if (req.originalUrl.indexOf('login') > 0 || req.originalUrl.indexOf('register')> 0 || req.originalUrl.indexOf('logout') > 0){
->>>>>>> origin
     next();
     return;
   }
