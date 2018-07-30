@@ -57,7 +57,7 @@ export default function setRoutes(app) {
 if (req.query.cardId && req.query.doorId){
 
   console.log(JSON.stringify(req.query));
-    card.findOne({_id: ObjectID(req.query.cardId)}, (err, card) => {
+    card.findOne({uuid:req.query.cardId}, (err, card) => {
       if(err) {
         res.status(500).send({status: 'ERROR'});
         throw err;
