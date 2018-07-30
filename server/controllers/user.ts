@@ -74,29 +74,4 @@ export default class UserCtrl extends BaseCtrl {
       });
   };
 
-
-<<<<<<< HEAD
-/*
-  checkSession = (req, res) => {
-
-    console.log('checkSession');
-    if(!(req.headers['x-access-token'])){
-      console.log("No token");
-      res.status(401).send({ auth: false, message: 'No token provided.' });
-    } else {
-      const token = jwt.sign({ id: user._id }, jwtSecret, {
-          expiresIn: 86400
-        });
-      jwt.verify(token, jwtSecret, function(err, decoded) {
-      if (err) return res.status(500).send({auth: false, message: 'Failed to authenticate token.'});
-      console.log('token verified: ')
-      req.userId = decoded.id;
-      next();
-      });
-    }
-  }*/
-    
-=======
->>>>>>> origin
-
 }

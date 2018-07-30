@@ -70,7 +70,7 @@ if (req.query.cardId && req.query.doorId){
           hasDoor(card, req.query.doorId, (door) =>{
             console.log('Door has this result: '+JSON.stringify(door));
             if(door != null) res.status(200).send({status: 'OK'});
-            else res.status(200).send({status: 'NO'});
+            else res.status(401).send({status: 'NO'});
             console.log("Card checked");
           })
         }
